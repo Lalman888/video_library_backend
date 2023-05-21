@@ -5,6 +5,8 @@ import logger from './utils/logger'
 import { connectToDatabase, disconnectFromDatabase } from './utils/database'
 import { CORS_ORIGIN } from './constants'
 import helment from 'helmet'
+import userRoute from './modules/user/user.route' 
+import authRoute from './modules/auth/auth.route'
 
 const Port = process.env.PORT || 4000
 
@@ -18,6 +20,9 @@ app.use(cors({
 }))
 
 app.use(helment())
+
+app.use('/api/users', userRoute)
+app.use('/api/auth', authRoute)
 
 const server = app.listen(Port,async () => {
     await connectToDatabase()
