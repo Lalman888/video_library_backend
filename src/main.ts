@@ -13,6 +13,7 @@ const signals = ['SIGINT', 'SIGTERM']
 
 const gracefulleShutdown = (signal: string) => {
     process.on(signal, async () => {
+        console.log(`Received ${signal}`)
         server.close()
         console.log(`Server is shutting down due to ${signal}`)
         
