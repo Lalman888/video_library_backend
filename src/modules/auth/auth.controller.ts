@@ -19,7 +19,7 @@ export async function loginHandler(req: Request<{},{},LoginBody>, res: Response)
 
 //   create token
 
-      const payload = omit(user.toJSON(),['password','_id']);
+      const payload = omit(user.toJSON(),['password']);
       const jwt = signJwt(payload);
 
       res.cookie("accessToken",jwt,

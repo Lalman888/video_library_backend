@@ -33,6 +33,8 @@ export class User {
 export const UserModel = getModelForClass(User,{
     schemaOptions: {
         timestamps:true,
+        _id:true,
+        
     },
 }
 )
