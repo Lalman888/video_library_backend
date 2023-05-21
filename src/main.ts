@@ -1,11 +1,27 @@
 import express from 'express'
+import cookieParser from 'cookie-parser'
+import cors from 'cors'
+import logger from './utils/logger'
+import { connectToDatabase, disconnectFromDatabase } from './utils/database'
+import { CORS_ORIGIN } from './constants'
+import helment from 'helmet'
 
 const Port = process.env.PORT || 4000
 
 const app = express()
 
-const server = app.listen(Port, () => {
-    console.log(`Server is running on port ${Port}`)
+app.use(cookieParser())
+app.use(express.json())
+app.use(cors({
+    origin: CORS_ORIGIN,
+    credentials: true
+}))
+
+app.use(helment())
+
+const server = app.listen(Port,async () => {
+    await connectToDatabase()
+    logger.info(`Server is running on port ${Port}`)
     }
 )
 
@@ -13,10 +29,13 @@ const signals = ['SIGINT', 'SIGTERM']
 
 const gracefulleShutdown = (signal: string) => {
     process.on(signal, async () => {
+        logger.info(`Received ${signal}`)
         server.close()
-        console.log(`Server is shutting down due to ${signal}`)
-        
+
         // disconnect from database
+        await disconnectFromDatabase()
+        logger.info(`Server is shutting down due to ${signal}`)
+        
         process.exit(0)
     })
 }
