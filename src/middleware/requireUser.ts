@@ -5,7 +5,7 @@ function requireUser(req: Request, res: Response, next: NextFunction) {
    const user = res.locals.user;
 
     if (!user) {
-        return res.send(StatusCodes.FORBIDDEN).send( { error: 'Unauthorized' });
+        return res.sendStatus(StatusCodes.FORBIDDEN).send( { error: 'Unauthorized' });
     }
 
     return next();
